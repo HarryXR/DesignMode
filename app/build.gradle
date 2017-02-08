@@ -26,4 +26,5 @@ dependencies {
     })
     compile 'com.android.support:appcompat-v7:24.1.0'
     testCompile 'junit:junit:4.12'
+    compile files('libs/ksoap2-android-assembly-3.5.0-jar-with-dependencies.jar')
 }

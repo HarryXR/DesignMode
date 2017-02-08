@@ -3,6 +3,7 @@ package com.harry.design;
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
+import android.text.TextUtils;
 import android.util.Log;
 import android.view.View;
 import android.widget.Button;
@@ -15,9 +16,9 @@ import org.ksoap2.transport.HttpTransportSE;
 
 public class MainActivity extends AppCompatActivity {
 
-    private EditText phoneSecEditText;
-    private TextView resultView;
-    private Button queryButton;
+    private EditText mEditText;
+    private TextView mResultTv;
+    private Button mQueryBtn;
     private String result;
 
     @Override
@@ -25,30 +26,28 @@ public class MainActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
-        phoneSecEditText = (EditText) findViewById(R.id.phone_sec);
-        resultView = (TextView) findViewById(R.id.result_text);
-        queryButton = (Button) findViewById(R.id.query_btn);
+        mEditText = (EditText) findViewById(R.id.phone_sec);
+        mResultTv = (TextView) findViewById(R.id.result_text);
+        mQueryBtn = (Button) findViewById(R.id.query_btn);
 
-        queryButton.setOnClickListener(new View.OnClickListener() {
+        mQueryBtn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                // 手机号码（段）
-                String phoneSec = phoneSecEditText.getText().toString().trim();
-                // 简单判断用户输入的手机号码（段）是否合法
-                if ("".equals(phoneSec) || phoneSec.length() < 7) {
-                    // 给出错误提示
-                    phoneSecEditText.setError("您输入的手机号码（段）有误！");
-                    phoneSecEditText.requestFocus();
-                    // 将显示查询结果的TextView清空
-                    resultView.setText("");
+
+                String phoneSec = mEditText.getText().toString().trim();
+
+                if (TextUtils.isEmpty(phoneSec) || phoneSec.length() < 7) {
+                    // 错误提示
+                    mEditText.setError("您输入的手机号码（段）有误！");
+                    mEditText.requestFocus();
+
+                    mResultTv.setText("");
                     return;
                 }
 
-                //启动后台异步线程进行连接webService操作，并且根据返回结果在主线程中改变UI
                 QueryAddressTask queryAddressTask = new QueryAddressTask();
                 //启动后台任务
                 queryAddressTask.execute(phoneSec);
-
             }
         });
     }
@@ -58,12 +57,12 @@ public class MainActivity extends AppCompatActivity {
      *
      * @param phoneSec 手机号段
      */
-    public String getRemoteInfo(String phoneSec) throws Exception{
+    public String getRemoteInfo(String phoneSec) throws Exception {
         String WSDL_URI = "http://ws.webxml.com.cn/WebServices/MobileCodeWS.asmx";//wsdl 的uri
-        String namespace = "http://WebXml.com.cn/";//namespace
+        String nameSpace = "http://WebXml.com.cn/";//namespace
         String methodName = "getMobileCodeInfo";//要调用的方法名称
 
-        SoapObject request = new SoapObject(namespace, methodName);
+        SoapObject request = new SoapObject(nameSpace, methodName);
         // 设置需调用WebService接口需要传入的两个参数mobileCode、userId
         request.addProperty("mobileCode", phoneSec);
         request.addProperty("userId", "");
@@ -80,9 +79,8 @@ public class MainActivity extends AppCompatActivity {
         SoapObject object = (SoapObject) envelope.bodyIn;
         // 获取返回的结果
         result = object.getProperty(0).toString();
-        Log.d("debug",result);
+        Log.d("debug", result);
         return result;
-
     }
 
     class QueryAddressTask extends AsyncTask<String, Integer, String> {
@@ -91,7 +89,6 @@ public class MainActivity extends AppCompatActivity {
             // 查询手机号码（段）信息*/
             try {
                 result = getRemoteInfo(params[0]);
-
             } catch (Exception e) {
                 e.printStackTrace();
             }
@@ -103,7 +100,7 @@ public class MainActivity extends AppCompatActivity {
         //此方法可以在主线程改变UI
         protected void onPostExecute(String result) {
             // 将WebService返回的结果显示在TextView中
-            resultView.setText(result);
+            mResultTv.setText(result);
         }
     }
 }

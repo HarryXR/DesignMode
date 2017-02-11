@@ -18,7 +18,7 @@ public class SingleTon {
 
     }
 
-    public static synchronized SingleTon getInstance() {
+    public static SingleTon getInstance() {
         /*
         双重检查加锁
         只有第一次调用时才会同步

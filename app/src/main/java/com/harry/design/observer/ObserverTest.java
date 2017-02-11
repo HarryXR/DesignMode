@@ -10,6 +10,10 @@ package com.harry.design.observer;
  * @date 2017/2/8.
  */
 public class ObserverTest {
+    /**
+     * 观察者模式
+     *
+     */
     public void test(){
         WeatherData weatherData=new WeatherData();
         CurrentConditionDisplay display=new CurrentConditionDisplay(weatherData);

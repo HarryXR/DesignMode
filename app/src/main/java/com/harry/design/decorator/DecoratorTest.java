@@ -4,12 +4,17 @@
 package com.harry.design.decorator;
 
 /**
- * 类/接口描述
+ * 装设者模式 测试类
  *
  * @author Harry
  * @date 2017/2/11.
  */
 public class DecoratorTest {
+    /**
+     * 装饰者模式
+     * 动态的将责任附加到对象上，
+     * 若要扩展功能，装饰者提供了比继承更有弹性的替代方案
+     */
     public void test() {
         //计算摩卡深蓓咖啡
         Beverage beverage = new DarkRoast();

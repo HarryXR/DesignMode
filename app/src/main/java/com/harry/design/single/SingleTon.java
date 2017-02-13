@@ -21,7 +21,7 @@ public class SingleTon {
     public static SingleTon getInstance() {
         /*
         双重检查加锁
-        只有第一次调用时才会同步
+        只有第一次调用时才会 执行同步
          */
         if (instance == null) {
             synchronized (SingleTon.class) {

@@ -20,6 +20,7 @@ public class MainActivity extends AppCompatActivity {
     private TextView mResultTv;
     private Button mQueryBtn;
     private String result;
+    QueryAddressTask queryAddressTask;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -45,7 +46,7 @@ public class MainActivity extends AppCompatActivity {
                     return;
                 }
 
-                QueryAddressTask queryAddressTask = new QueryAddressTask();
+                queryAddressTask = new QueryAddressTask();
                 //启动后台任务
                 queryAddressTask.execute(phoneSec);
             }
@@ -102,5 +103,11 @@ public class MainActivity extends AppCompatActivity {
             // 将WebService返回的结果显示在TextView中
             mResultTv.setText(result);
         }
+    }
+
+    @Override
+    protected void onDestroy() {
+        queryAddressTask.cancel(true);
+        super.onDestroy();
     }
 }

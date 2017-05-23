@@ -10,5 +10,6 @@ package com.harry.design.command;
  * @date 2017/2/17.
  */
 public interface Command {
-    void execute();
+    void execute();//执行命令
+    void undo();//撤销命令
 }
